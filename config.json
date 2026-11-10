@@ -1,0 +1,14 @@
+{
+  "made_for_kids": false,
+  "privacy_status": "public",
+  "default_language": "en",
+  "max_uploads_per_run": 1,
+  "drive_folder_id": "1x9QH_zRsFqRRRMVyvoIRpcle_V_natTv",
+  "ai_provider": "gemini",
+  "model": "gemini-2.0-flash",
+  "comment_reply": {
+    "enabled": true,
+    "max_replies_per_run": 15,
+    "lookback_days": 7
+  }
+}

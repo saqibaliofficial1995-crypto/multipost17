@@ -1,0 +1,72 @@
+name: Daily Upload
+
+on:
+  schedule:
+    - cron: '10 1,7,13 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (do not upload)'
+        required: false
+        default: false
+        type: boolean
+      max_uploads:
+        description: 'Max videos to upload'
+        required: false
+        default: '1'
+
+concurrency:
+  group: multipost17-${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONIOENCODING: utf-8
+      YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+      YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+      YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+      DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -o Acquire::ForceIPv4=true && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -o Acquire::ForceIPv4=true --no-install-recommends ffmpeg
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-auth google-auth-oauthlib google-api-python-client requests
+
+      - name: Run CI Upload
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ -n "${{ inputs.max_uploads }}" ]; then
+            ARGS="$ARGS --max-uploads ${{ inputs.max_uploads }}"
+          fi
+          python -m src.ci_run $ARGS
+
+      - name: Commit state updates
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name "saqibaliofficial1995-crypto"
+          git config user.email "saqibaliofficial1995@gmail.com"
+          git add state/uploaded.json
+          git diff --staged --quiet || git commit -m "Automated state update: uploaded videos [skip ci]"
+          git push origin main
