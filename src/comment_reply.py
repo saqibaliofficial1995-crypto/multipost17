@@ -74,7 +74,7 @@ def generate_reply_with_groq(video_title, video_description, comment_text, api_k
         reply = reply[1:-1].strip()
     return reply
 
-def generate_reply_with_gemini(video_title, video_description, comment_text, api_key, model="gemini-flash-lite-latest", channel_name="Mind Stories"):
+def generate_reply_with_gemini(video_title, video_description, comment_text, api_key, model="gemini-3.5-flash-lite", channel_name="Mind Stories"):
     prompt = (
         f"You are the creator of YouTube channel '{channel_name}'.\n"
         f"Video Title: {video_title}\n"
@@ -92,7 +92,17 @@ def generate_reply_with_gemini(video_title, video_description, comment_text, api
     )
 
     candidates = []
-    for m in [model, "gemini-flash-lite-latest", "gemini-flash-latest", "gemini-2.5-flash", "gemini-2.0-flash"]:
+    for m in [
+        model,
+        "gemini-3.5-flash-lite",
+        "gemini-flash-lite-latest",
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
+        "gemini-3.6-flash",
+        "gemini-3.5-flash",
+        "gemini-flash-latest",
+        "gemini-3.1-flash-lite",
+    ]:
         if m and m not in candidates:
             candidates.append(m)
 
@@ -113,7 +123,9 @@ def generate_reply_with_gemini(video_title, video_description, comment_text, api
                 last_err = f"HTTP {res.status_code}: {res.text[:150]}"
                 continue
             cand = res.json().get("candidates", [{}])[0]
-            reply = cand.get("content", {}).get("parts", [{}])[0].get("text", "").strip()
+            parts = cand.get("content", {}).get("parts", [])
+            text_parts = [p.get("text", "") for p in parts if not p.get("thought") and p.get("text")]
+            reply = (" ".join(text_parts) if text_parts else (parts[0].get("text", "") if parts else "")).strip()
             if reply:
                 if reply.startswith('"') and reply.endswith('"'):
                     reply = reply[1:-1].strip()

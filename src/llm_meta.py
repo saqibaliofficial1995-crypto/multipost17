@@ -30,12 +30,22 @@ GEMINI_UPLOAD_API = "https://generativelanguage.googleapis.com/upload/v1beta/fil
 
 EXCLUDE_MODEL_SUBSTRINGS = [
     "-tts", "-image", "-embedding", "-aqa", "-vision", "-thinking",
-    "-live", "-native-audio", "-dialog", "learnlm", "gemma"
+    "-live", "-native-audio", "-dialog", "learnlm", "gemma",
+    "-transcribe", "computer-use", "robotics", "deep-research",
+    "customtools", "nano-banana", "lyria", "antigravity"
 ]
 
 PRIORITY_GEMINI_MODELS = [
+    "gemini-3.5-flash-lite",
     "gemini-flash-lite-latest",
+    "gemini-3.8-flash",
+    "gemini-3.7-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
     "gemini-flash-latest",
+    "gemini-3.1-flash-lite",
+    "gemini-3.1-flash-lite-preview",
+    "gemini-3-flash-preview",
     "gemini-2.5-flash",
     "gemini-2.0-flash",
     "gemini-pro-latest",
@@ -155,7 +165,7 @@ def parse_json_payload(raw_text):
             pass
     return None
 
-def get_live_gemini_models(api_key, preferred_model="gemini-flash-lite-latest"):
+def get_live_gemini_models(api_key, preferred_model="gemini-3.5-flash-lite"):
     order = []
     for m in [preferred_model] + PRIORITY_GEMINI_MODELS:
         if m and m not in order:
@@ -176,9 +186,14 @@ def get_live_gemini_models(api_key, preferred_model="gemini-flash-lite-latest"):
                 valid.append(name)
             ordered = []
             for pref in order:
+                if pref in valid and pref not in ordered:
+                    ordered.append(pref)
                 for m in valid:
-                    if (m == pref or m.startswith(pref)) and m not in ordered:
+                    if m.startswith(pref + "-") and m not in ordered:
                         ordered.append(m)
+            for m in valid:
+                if "gemini" in m.lower() and "flash" in m.lower() and m not in ordered:
+                    ordered.append(m)
             if ordered:
                 print(f"[llm_meta] Live Gemini models ({len(ordered)}): {ordered}", flush=True)
                 return ordered
@@ -268,7 +283,14 @@ def delete_gemini_file(remote_name, api_key):
     except Exception as e:
         print(f"[llm_meta] Warning deleting {remote_name}: {e}", flush=True)
 
-def generate_video_metadata_gemini(video_path, duration, api_key, model="gemini-flash-lite-latest", channel_name="Mind Stories"):
+def extract_gemini_text(candidate_obj):
+    parts = candidate_obj.get("content", {}).get("parts", [])
+    text_parts = [p.get("text", "") for p in parts if not p.get("thought") and p.get("text")]
+    if text_parts:
+        return "\n".join(text_parts).strip()
+    return (parts[0].get("text", "") if parts else "").strip()
+
+def generate_video_metadata_gemini(video_path, duration, api_key, model="gemini-3.5-flash-lite", channel_name="Mind Stories"):
     """
     Direct file upload to Gemini Files API with multimodal video analysis.
     """
@@ -322,7 +344,7 @@ def generate_video_metadata_gemini(video_path, duration, api_key, model="gemini-
                     )
                     if resp.status_code == 200:
                         cand = resp.json().get("candidates", [{}])[0]
-                        text_content = cand.get("content", {}).get("parts", [{}])[0].get("text", "")
+                        text_content = extract_gemini_text(cand)
                         parsed = parse_json_payload(text_content)
                         if not parsed:
                             print(f"[llm_meta] Unparseable JSON from '{candidate}', trying next...", flush=True)
@@ -341,7 +363,7 @@ def generate_video_metadata_gemini(video_path, duration, api_key, model="gemini-
                                 timeout=90
                             )
                             if r2.status_code == 200:
-                                t2 = r2.json().get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                                t2 = extract_gemini_text(r2.json().get("candidates", [{}])[0])
                                 p2 = parse_json_payload(t2) or {}
                                 topic2 = clean_text_field(p2.get("topic") or p2.get("inferred_topic") or "")
                                 if topic2:
@@ -377,5 +399,5 @@ def generate_video_metadata_gemini(video_path, duration, api_key, model="gemini-
             print(f"[llm_meta] Cleaning up Gemini file {remote_name}...", flush=True)
             delete_gemini_file(remote_name, api_key)
 
-def generate_video_metadata(file_path, duration, api_key, model="gemini-flash-lite-latest", provider="gemini", channel_name="Mind Stories"):
+def generate_video_metadata(file_path, duration, api_key, model="gemini-3.5-flash-lite", provider="gemini", channel_name="Mind Stories"):
     return generate_video_metadata_gemini(file_path, duration, api_key, model=model, channel_name=channel_name)

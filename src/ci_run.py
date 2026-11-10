@@ -44,7 +44,7 @@ def main():
     privacy_status = config.get("privacy_status", "public")
     made_for_kids = config.get("made_for_kids", False)
     ai_provider = config.get("ai_provider", "gemini")
-    model = config.get("model", "gemini-flash-lite-latest")
+    model = config.get("model", "gemini-3.5-flash-lite")
 
     # Provider-aware validation
     validate_environment(ai_provider=ai_provider, config=config)
