@@ -1,5 +1,5 @@
 """
-Google Drive client with full pagination, download, and file movement.
+Google Drive client with full pagination, download, and post-upload file removal.
 """
 import socket
 
@@ -12,9 +12,8 @@ def _ipv4(host, port, family=0, type=0, proto=0, flags=0):
 
 socket.getaddrinfo = _ipv4
 
-import io
-import os
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
 
 VIDEO_EXTENSIONS = (".mp4", ".mov", ".mkv", ".avi", ".webm")
@@ -35,7 +34,9 @@ def list_all_files_in_folder(service, folder_id):
         resp = service.files().list(
             q=query,
             pageSize=100,
-            fields="nextPageToken, files(id, name, mimeType, size, createdTime)",
+            fields="nextPageToken, files(id, name, mimeType, size, createdTime, parents, capabilities(canTrash,canDelete))",
+            supportsAllDrives=True,
+            includeItemsFromAllDrives=True,
             pageToken=page_token
         ).execute()
 
@@ -59,25 +60,12 @@ def list_all_files_in_folder(service, folder_id):
         else:
             non_conforming.append(item)
 
+    # Sort oldest first by createdTime/name for deterministic FIFO upload order
+    video_files.sort(key=lambda x: (x.get("createdTime") or "", x.get("name") or ""))
     return video_files, non_conforming
 
-def get_or_create_uploaded_folder(service, parent_folder_id, folder_name="Uploaded"):
-    query = f"'{parent_folder_id}' in parents and name = '{folder_name}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
-    resp = service.files().list(q=query, fields="files(id, name)").execute()
-    files = resp.get("files", [])
-    if files:
-        return files[0]["id"]
-
-    metadata = {
-        "name": folder_name,
-        "mimeType": "application/vnd.google-apps.folder",
-        "parents": [parent_folder_id]
-    }
-    created = service.files().create(body=metadata, fields="id").execute()
-    return created["id"]
-
 def download_drive_file(service, file_id, dest_path):
-    request = service.files().get_media(fileId=file_id)
+    request = service.files().get_media(fileId=file_id, supportsAllDrives=True)
     with open(dest_path, "wb") as fh:
         downloader = MediaIoBaseDownload(fh, request, chunksize=1024*1024*8)
         done = False
@@ -86,10 +74,33 @@ def download_drive_file(service, file_id, dest_path):
             if status:
                 print(f"[drive] Download progress: {int(status.progress() * 100)}%")
 
-def move_file_to_folder(service, file_id, source_folder_id, target_folder_id):
-    service.files().update(
-        fileId=file_id,
-        addParents=target_folder_id,
-        removeParents=source_folder_id,
-        fields="id, parents"
-    ).execute()
+def remove_uploaded_file(service, file_id, source_folder_id):
+    """
+    Removes an uploaded video from the Drive inbox folder after confirmed YouTube publish.
+    Tries moving the file to Drive Trash first (safe, frees folder); if the file is owned
+    by another account (403 on trash), falls back to unlinking it from source_folder_id.
+    """
+    try:
+        service.files().update(
+            fileId=file_id,
+            body={"trashed": True},
+            supportsAllDrives=True,
+            fields="id, trashed"
+        ).execute()
+        print(f"[drive] Moved uploaded file {file_id} to Trash.")
+        return "trashed"
+    except HttpError as e:
+        if e.resp.status in (403, 404):
+            try:
+                service.files().update(
+                    fileId=file_id,
+                    removeParents=source_folder_id,
+                    supportsAllDrives=True,
+                    fields="id, parents"
+                ).execute()
+                print(f"[drive] Unlinked shared file {file_id} from folder {source_folder_id} (non-owner fallback).")
+                return "unlinked"
+            except Exception as inner_err:
+                print(f"[drive] Warning: Could not remove shared file {file_id} from folder: {inner_err}")
+                raise
+        raise

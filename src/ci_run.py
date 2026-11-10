@@ -1,5 +1,5 @@
 """
-CI Orchestrator: Drive Audit -> Download -> Normalize -> LLM Metadata -> Validate -> Upload -> Move -> Report.
+CI Orchestrator: Drive Audit -> Download -> Normalize -> LLM Metadata -> Validate -> Upload -> Remove from Drive -> Report.
 """
 import socket
 
@@ -21,9 +21,8 @@ from src.auth import get_credentials, get_gemini_key, get_groq_key, validate_env
 from src.drive_client import (
     get_drive_service,
     list_all_files_in_folder,
-    get_or_create_uploaded_folder,
     download_drive_file,
-    move_file_to_folder,
+    remove_uploaded_file,
 )
 from src.normalize import get_video_duration, normalize_video
 from src.llm_meta import generate_video_metadata
@@ -44,8 +43,8 @@ def main():
     folder_id = os.environ.get("DRIVE_FOLDER_ID") or config.get("drive_folder_id")
     privacy_status = config.get("privacy_status", "public")
     made_for_kids = config.get("made_for_kids", False)
-    ai_provider = config.get("ai_provider", "groq")
-    model = config.get("model", "qwen/qwen3.8-27b")
+    ai_provider = config.get("ai_provider", "gemini")
+    model = config.get("model", "gemini-flash-lite-latest")
 
     # Provider-aware validation
     validate_environment(ai_provider=ai_provider, config=config)
@@ -65,7 +64,6 @@ def main():
     print(f"[ci_run] Channel Video Count Before: {ch_info_before['video_count']}")
 
     # Drive audit
-    uploaded_folder_id = get_or_create_uploaded_folder(drive_service, folder_id)
     videos, non_conforming = list_all_files_in_folder(drive_service, folder_id)
     drive_count_before = len(videos)
     print(f"[drive] Drive True Video Count Before: {drive_count_before}")
@@ -103,7 +101,7 @@ def main():
             print(f"[drive] Download complete: {raw_path}")
 
             # 2. Normalize & measure
-            duration = get_video_duration(raw_path)
+            get_video_duration(raw_path)
             normalize_video(raw_path, norm_path)
             norm_duration = get_video_duration(norm_path)
             print(f"[normalize] Normalized video duration: {norm_duration:.2f}s")
@@ -117,6 +115,7 @@ def main():
                 provider=ai_provider
             )
 
+            print(f"[meta] Path used: {meta.get('path')}")
             print(f"[meta] Model used: {meta.get('model_used', model)}")
             print(f"[meta] Inferred topic: {meta.get('topic')}")
             print(f"[meta] Title ({len(meta['title'])} chars): {meta['title']}")
@@ -124,18 +123,19 @@ def main():
             print(f"[meta] Hashtags: {' '.join(meta['hashtags'])}")
 
             if args.dry_run:
-                print(f"[upload] DRY RUN: Would upload video '{meta['title']}' to YouTube.")
+                print(f"[upload] DRY RUN: Would upload video '{meta['title']}' to YouTube and remove {file_id} from Drive.")
                 continue
 
-            # 4. Upload
+            # 4. Upload (strict safety gate inside upload_video)
             yt_id = upload_video(yt_service, norm_path, meta, privacy_status, made_for_kids)
             print(f"[upload] Uploaded to YouTube with ID: {yt_id} (URL: https://youtu.be/{yt_id})")
 
-            # 5. Move to Uploaded
-            move_file_to_folder(drive_service, file_id, folder_id, uploaded_folder_id)
-            print(f"[drive] Moved file {file_id} to Uploaded folder")
+            # 5. Remove uploaded file from Drive inbox folder
+            remove_action = remove_uploaded_file(drive_service, file_id, folder_id)
+            print(f"[drive] Removed uploaded file {file_id} from Drive ({remove_action}).")
 
             # 6. Update state
+            now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
             state["items"][file_id] = {
                 "name": file_name,
                 "yt_id": yt_id,
@@ -144,14 +144,16 @@ def main():
                 "topic": meta["topic"],
                 "tags_count": len(meta["tags"]),
                 "hashtags": meta["hashtags"],
-                "uploaded_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
+                "drive_removal": remove_action,
+                "uploaded_at": now_iso
             }
             state.setdefault("history", []).append({
                 "drive_id": file_id,
                 "yt_id": yt_id,
                 "title": meta["title"],
                 "topic": meta["topic"],
-                "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
+                "drive_removal": remove_action,
+                "timestamp": now_iso
             })
 
     if not args.dry_run:

@@ -2,7 +2,7 @@ name: Weekly Analytics
 
 on:
   schedule:
-    - cron: '20 15 * * 0'
+    - cron: '10 17 * * 0'
   workflow_dispatch:
 
 concurrency:

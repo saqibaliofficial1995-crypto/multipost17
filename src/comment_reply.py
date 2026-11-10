@@ -74,7 +74,7 @@ def generate_reply_with_groq(video_title, video_description, comment_text, api_k
         reply = reply[1:-1].strip()
     return reply
 
-def generate_reply_with_gemini(video_title, video_description, comment_text, api_key, model="gemini-2.0-flash", channel_name="Mind Stories"):
+def generate_reply_with_gemini(video_title, video_description, comment_text, api_key, model="gemini-flash-lite-latest", channel_name="Mind Stories"):
     prompt = (
         f"You are the creator of YouTube channel '{channel_name}'.\n"
         f"Video Title: {video_title}\n"
@@ -91,22 +91,36 @@ def generate_reply_with_gemini(video_title, video_description, comment_text, api
         "- Return ONLY the reply text, no quotes or explanations."
     )
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-    headers = {
-        "x-goog-api-key": api_key,
-        "Content-Type": "application/json"
-    }
+    candidates = []
+    for m in [model, "gemini-flash-lite-latest", "gemini-flash-latest", "gemini-2.5-flash", "gemini-2.0-flash"]:
+        if m and m not in candidates:
+            candidates.append(m)
+
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": 0.7, "maxOutputTokens": 150}
     }
-    res = requests.post(url, headers=headers, params={"key": api_key}, json=payload, timeout=30)
-    res.raise_for_status()
-    cand = res.json().get("candidates", [{}])[0]
-    reply = cand.get("content", {}).get("parts", [{}])[0].get("text", "").strip()
-    if reply.startswith('"') and reply.endswith('"'):
-        reply = reply[1:-1].strip()
-    return reply
+    last_err = None
+    for cand_model in candidates:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{cand_model}:generateContent"
+        headers = {
+            "x-goog-api-key": api_key,
+            "Content-Type": "application/json"
+        }
+        try:
+            res = requests.post(url, headers=headers, params={"key": api_key}, json=payload, timeout=30)
+            if res.status_code != 200:
+                last_err = f"HTTP {res.status_code}: {res.text[:150]}"
+                continue
+            cand = res.json().get("candidates", [{}])[0]
+            reply = cand.get("content", {}).get("parts", [{}])[0].get("text", "").strip()
+            if reply:
+                if reply.startswith('"') and reply.endswith('"'):
+                    reply = reply[1:-1].strip()
+                return reply
+        except Exception as e:
+            last_err = str(e)
+    raise RuntimeError(f"All Gemini models failed for comment reply: {last_err}")
 
 def run_comment_replies(dry_run=False):
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
