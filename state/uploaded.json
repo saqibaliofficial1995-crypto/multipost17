@@ -14,6 +14,21 @@
       ],
       "drive_removal": "trashed",
       "uploaded_at": "2026-11-10T16:29:00.752467+00:00"
+    },
+    "1uaNCp8plOYCD7vtUPitOp6D-MPqXssWI": {
+      "name": "Reel 02 - Loyalty.mp4",
+      "yt_id": "rpD_sjzN5II",
+      "yt_url": "https://youtu.be/rpD_sjzN5II",
+      "title": "The Dark Truth About Family and Betrayal",
+      "topic": "Surreal emotional narrative",
+      "tags_count": 12,
+      "hashtags": [
+        "#shorts",
+        "#surreal",
+        "#storytelling"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-19T16:55:54.954200+00:00"
     }
   },
   "history": [
@@ -24,6 +39,14 @@
       "topic": "psychology of quiet people",
       "drive_removal": "trashed",
       "timestamp": "2026-11-10T16:29:00.752467+00:00"
+    },
+    {
+      "drive_id": "1uaNCp8plOYCD7vtUPitOp6D-MPqXssWI",
+      "yt_id": "rpD_sjzN5II",
+      "title": "The Dark Truth About Family and Betrayal",
+      "topic": "Surreal emotional narrative",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-19T16:55:54.954200+00:00"
     }
   ]
 }
