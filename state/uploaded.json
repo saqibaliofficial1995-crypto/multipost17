@@ -44,6 +44,21 @@
       ],
       "drive_removal": "unlinked",
       "uploaded_at": "2026-11-20T08:27:26.905398+00:00"
+    },
+    "1oViOe8bviXPll7rzPWV1uxErmQ-n4cgg": {
+      "name": "Reel 04 - A Mother's Sacrifices.mp4",
+      "yt_id": "QyAdh7r2EDM",
+      "yt_url": "https://youtu.be/QyAdh7r2EDM",
+      "title": "The Saddest Goodbye in a Watercolor Story",
+      "topic": "Emotional Watercolor Animation",
+      "tags_count": 12,
+      "hashtags": [
+        "#shorts",
+        "#watercolor",
+        "#storytime"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-20T21:02:26.147880+00:00"
     }
   },
   "history": [
@@ -70,6 +85,14 @@
       "topic": "Surreal Narrative Art",
       "drive_removal": "unlinked",
       "timestamp": "2026-11-20T08:27:26.905398+00:00"
+    },
+    {
+      "drive_id": "1oViOe8bviXPll7rzPWV1uxErmQ-n4cgg",
+      "yt_id": "QyAdh7r2EDM",
+      "title": "The Saddest Goodbye in a Watercolor Story",
+      "topic": "Emotional Watercolor Animation",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-20T21:02:26.147880+00:00"
     }
   ]
 }
