@@ -29,6 +29,21 @@
       ],
       "drive_removal": "unlinked",
       "uploaded_at": "2026-11-19T16:55:54.954200+00:00"
+    },
+    "18jxO9v8b6cks7hd6QNP6Sk_l-JwmotHS": {
+      "name": "Reel 03 - A Father's Silence.mp4",
+      "yt_id": "gu9FHLO7WMI",
+      "yt_url": "https://youtu.be/gu9FHLO7WMI",
+      "title": "The Heartbreaking Story of a Lonely Father",
+      "topic": "Surreal Narrative Art",
+      "tags_count": 12,
+      "hashtags": [
+        "#shorts",
+        "#storytime",
+        "#digitalart"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-20T08:27:26.905398+00:00"
     }
   },
   "history": [
@@ -47,6 +62,14 @@
       "topic": "Surreal emotional narrative",
       "drive_removal": "unlinked",
       "timestamp": "2026-11-19T16:55:54.954200+00:00"
+    },
+    {
+      "drive_id": "18jxO9v8b6cks7hd6QNP6Sk_l-JwmotHS",
+      "yt_id": "gu9FHLO7WMI",
+      "title": "The Heartbreaking Story of a Lonely Father",
+      "topic": "Surreal Narrative Art",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-20T08:27:26.905398+00:00"
     }
   ]
 }
