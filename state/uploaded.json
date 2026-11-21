@@ -59,6 +59,21 @@
       ],
       "drive_removal": "unlinked",
       "uploaded_at": "2026-11-20T21:02:26.147880+00:00"
+    },
+    "1KdV7jldJWC1Q16Q7AoZZL3VYua1GLwsC": {
+      "name": "Reel 05 - Betrayal by a Close Friend.mp4",
+      "yt_id": "S78ytduZqY8",
+      "yt_url": "https://youtu.be/S78ytduZqY8",
+      "title": "The Dark Truth About Walking Away",
+      "topic": "Emotional animation",
+      "tags_count": 12,
+      "hashtags": [
+        "#shorts",
+        "#animation",
+        "#darkart"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-21T08:14:43.539284+00:00"
     }
   },
   "history": [
@@ -93,6 +108,14 @@
       "topic": "Emotional Watercolor Animation",
       "drive_removal": "unlinked",
       "timestamp": "2026-11-20T21:02:26.147880+00:00"
+    },
+    {
+      "drive_id": "1KdV7jldJWC1Q16Q7AoZZL3VYua1GLwsC",
+      "yt_id": "S78ytduZqY8",
+      "title": "The Dark Truth About Walking Away",
+      "topic": "Emotional animation",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-21T08:14:43.539284+00:00"
     }
   ]
 }
