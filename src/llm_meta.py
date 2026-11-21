@@ -103,6 +103,12 @@ def sanitize_metadata(meta, duration, channel_name="Mind Stories"):
     ht_str = " ".join(clean_ht)
     description = f"{body}\n\n{ht_str}\n\n{channel_name}"
 
+    # Append #Shorts to title for Shorts algorithm priority
+    if duration <= 60 and "#shorts" not in title.lower():
+        if len(title) + len(" #Shorts") <= 68:
+            title = f"{title} #Shorts"
+        else:
+            title = title[:58].rsplit(" ", 1)[0] + " #Shorts"
     meta["title"] = title
     meta["description"] = description
     meta["tags"] = clean_tags
@@ -181,8 +187,8 @@ def generate_video_metadata_groq(video_path, duration, api_key, model="qwen/qwen
         "Watch these 3 video frames carefully. Do NOT use the video filename to guess content.\n"
         "Return ONLY a raw JSON object with no markdown fences, no formatting before or after.\n"
         "Required JSON keys:\n"
-        "- title: engaging YouTube title, strictly under 60 characters, no currency symbols or number claims.\n"
-        "- description: 2-3 engaging sentences describing what is happening visually in the video.\n"
+        "- title: Viral YouTube Shorts hook title sparking intense curiosity, emotion, or reaction (e.g. 'Wait for what happens...', 'Nobody expected this ending!', 'The most satisfying...'), strictly under 50 characters, natural English, no currency/magnitude claims.\n"
+        "- description: 2-3 engaging sentences describing the visual action, ending with 'Subscribe for more daily shorts!'.\n"
         "- tags: array of 10 to 15 relevant keyword tags (single words or short phrases).\n"
         "- hashtags: array of exactly 3 relevant hashtags starting with '#' (include #shorts if short/vertical).\n"
         "- topic: a specific 1 to 4 word thematic niche/topic of this video inferred strictly from the video visuals.\n"
@@ -362,7 +368,7 @@ def generate_video_metadata_gemini(video_path, duration, api_key, model="gemini-
             "Channel creator: 'Mind Stories'.\n"
             "Video duration: " + str(duration) + " seconds.\n"
             "Required JSON keys:\n"
-            "- title: engaging YouTube title, strictly under 60 characters, no currency symbols or number claims.\n"
+            "- title: Viral YouTube Shorts hook title sparking intense curiosity, emotion, or reaction (e.g. 'Wait for what happens...', 'Nobody expected this ending!', 'The most satisfying...'), strictly under 50 characters, natural English, no currency/magnitude claims.\n"
             "- description: 2-3 engaging sentences describing what is happening in the video.\n"
             "- tags: array of 10 to 15 relevant keyword tags (single words or short phrases).\n"
             "- hashtags: array of exactly 3 relevant hashtags starting with '#' (include #shorts if short/vertical).\n"

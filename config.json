@@ -10,5 +10,6 @@
     "enabled": true,
     "max_replies_per_run": 15,
     "lookback_days": 7
-  }
+  },
+  "category_id": "24"
 }

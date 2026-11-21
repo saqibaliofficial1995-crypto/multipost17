@@ -78,7 +78,7 @@ def upload_video(service, file_path, metadata, privacy_status="public", made_for
             "title": metadata["title"],
             "description": metadata["description"],
             "tags": metadata.get("tags", []),
-            "categoryId": "22",
+            "categoryId": str(config.get("category_id", metadata.get("category_id", "22"))),
         },
         "status": {
             "privacyStatus": privacy_status,
