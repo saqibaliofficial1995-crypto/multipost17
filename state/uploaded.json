@@ -89,6 +89,21 @@
       ],
       "drive_removal": "unlinked",
       "uploaded_at": "2026-11-22T18:37:36.227281+00:00"
+    },
+    "1iI6JQvlhNVl6kAL9iLU6VWfFdgracLeE": {
+      "name": "Reel 07 - Loneliness in a Crowd.mp4",
+      "yt_id": "yDypNEPNZAE",
+      "yt_url": "https://youtu.be/yDypNEPNZAE",
+      "title": "The secret to finding true connection #Shorts",
+      "topic": "Emotional animation",
+      "tags_count": 12,
+      "hashtags": [
+        "#shorts",
+        "#animation",
+        "#storytelling"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-22T20:18:42.816414+00:00"
     }
   },
   "history": [
@@ -139,6 +154,14 @@
       "topic": "Mysterious animation",
       "drive_removal": "unlinked",
       "timestamp": "2026-11-22T18:37:36.227281+00:00"
+    },
+    {
+      "drive_id": "1iI6JQvlhNVl6kAL9iLU6VWfFdgracLeE",
+      "yt_id": "yDypNEPNZAE",
+      "title": "The secret to finding true connection #Shorts",
+      "topic": "Emotional animation",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-22T20:18:42.816414+00:00"
     }
   ]
 }
