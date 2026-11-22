@@ -74,6 +74,21 @@
       ],
       "drive_removal": "unlinked",
       "uploaded_at": "2026-11-21T08:14:43.539284+00:00"
+    },
+    "1UrjfLBp8VMG5UR4ahzZ6fYulnzbtDG65": {
+      "name": "Reel 06 - Regret.mp4",
+      "yt_id": "ixIpY1aEI0I",
+      "yt_url": "https://youtu.be/ixIpY1aEI0I",
+      "title": "The door that changes everything... #Shorts",
+      "topic": "Mysterious animation",
+      "tags_count": 12,
+      "hashtags": [
+        "#shorts",
+        "#mystery",
+        "#animation"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-22T18:37:36.227281+00:00"
     }
   },
   "history": [
@@ -116,6 +131,14 @@
       "topic": "Emotional animation",
       "drive_removal": "unlinked",
       "timestamp": "2026-11-21T08:14:43.539284+00:00"
+    },
+    {
+      "drive_id": "1UrjfLBp8VMG5UR4ahzZ6fYulnzbtDG65",
+      "yt_id": "ixIpY1aEI0I",
+      "title": "The door that changes everything... #Shorts",
+      "topic": "Mysterious animation",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-22T18:37:36.227281+00:00"
     }
   ]
 }
