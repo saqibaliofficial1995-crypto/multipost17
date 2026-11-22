@@ -1,0 +1,45 @@
+{
+  "channel_id": "UCJkDpH0h8vTvVK6wgV0jThA",
+  "channel_title": "Mind Stories",
+  "start_date": "2026-11-15",
+  "end_date": "2026-11-22",
+  "metrics": {
+    "kind": "youtubeAnalytics#resultTable",
+    "columnHeaders": [
+      {
+        "name": "views",
+        "columnType": "METRIC",
+        "dataType": "INTEGER"
+      },
+      {
+        "name": "estimatedMinutesWatched",
+        "columnType": "METRIC",
+        "dataType": "INTEGER"
+      },
+      {
+        "name": "averageViewDuration",
+        "columnType": "METRIC",
+        "dataType": "INTEGER"
+      },
+      {
+        "name": "subscribersGained",
+        "columnType": "METRIC",
+        "dataType": "INTEGER"
+      },
+      {
+        "name": "subscribersLost",
+        "columnType": "METRIC",
+        "dataType": "INTEGER"
+      }
+    ],
+    "rows": [
+      [
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  }
+}
