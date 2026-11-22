@@ -171,6 +171,8 @@ def run_comment_replies(dry_run=False):
             state = json.load(f)
     else:
         state = {"replied": [], "history": []}
+    if isinstance(state, list):
+        state = {"replied": state, "history": []}
     replied_ids = set(state.get("replied", []))
 
     print(f"[reply] Fetching comment threads for channel {channel_id} (last {lookback_days} days)...")
