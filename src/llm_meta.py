@@ -220,12 +220,23 @@ def generate_video_metadata_groq(video_path, duration, api_key, model="qwen/qwen
 
     url = "https://api.groq.com/openai/v1/chat/completions"
     res = None
-    for retry_i in range(3):
+    for retry_i in range(5):
         try:
             res = requests.post(url, headers=headers, json=payload, timeout=60)
             if res.status_code == 200:
                 break
-            time.sleep(2 * (retry_i + 1))
+            if res.status_code == 429:
+                wait_sec = 25
+                try:
+                    retry_after = res.headers.get("retry-after")
+                    if retry_after:
+                        wait_sec = max(int(float(retry_after)), wait_sec)
+                except Exception:
+                    pass
+                print(f"[groq] Rate limit 429 hit. Waiting {wait_sec}s before retry...", flush=True)
+                time.sleep(wait_sec)
+            else:
+                time.sleep(2 * (retry_i + 1))
         except Exception as e:
             print(f"[warning] Groq request error: {e}", flush=True)
             time.sleep(2)
