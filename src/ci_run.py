@@ -115,6 +115,7 @@ def main():
                 provider=ai_provider
             )
 
+            meta["category_id"] = str(config.get("category_id", "22"))
             print(f"[meta] Path used: {meta.get('path')}")
             print(f"[meta] Model used: {meta.get('model_used', model)}")
             print(f"[meta] Inferred topic: {meta.get('topic')}")
