@@ -134,6 +134,21 @@
       ],
       "drive_removal": "unlinked",
       "uploaded_at": "2026-11-24T00:58:14.153721+00:00"
+    },
+    "1cFhwOTsa4ErHg-pmv32oasF-zRuhkVxH": {
+      "name": "Reel 10 - Letting Go.mp4",
+      "yt_id": "K1sf0kfe6uo",
+      "yt_url": "https://youtu.be/K1sf0kfe6uo",
+      "title": "The journey from darkness to light... #Shorts",
+      "topic": "Emotional animation",
+      "tags_count": 12,
+      "hashtags": [
+        "#shorts",
+        "#animation",
+        "#storytelling"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-24T10:51:48.519591+00:00"
     }
   },
   "history": [
@@ -208,6 +223,14 @@
       "topic": "Emotional Animation",
       "drive_removal": "unlinked",
       "timestamp": "2026-11-24T00:58:14.153721+00:00"
+    },
+    {
+      "drive_id": "1cFhwOTsa4ErHg-pmv32oasF-zRuhkVxH",
+      "yt_id": "K1sf0kfe6uo",
+      "title": "The journey from darkness to light... #Shorts",
+      "topic": "Emotional animation",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-24T10:51:48.519591+00:00"
     }
   ]
 }
