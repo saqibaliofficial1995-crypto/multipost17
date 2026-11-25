@@ -179,6 +179,21 @@
       ],
       "drive_removal": "unlinked",
       "uploaded_at": "2026-11-25T09:47:07.588256+00:00"
+    },
+    "1ox43cRxqcVwIWkzsR3IoKfLE2C90YJD4": {
+      "name": "Reel 13 - Forgiveness.mp4",
+      "yt_id": "w1RH5NQbg3s",
+      "yt_url": "https://youtu.be/w1RH5NQbg3s",
+      "title": "The truth about your struggle... #Shorts",
+      "topic": "Motivational animation",
+      "tags_count": 12,
+      "hashtags": [
+        "#motivation",
+        "#shorts",
+        "#animation"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-25T22:27:19.802297+00:00"
     }
   },
   "history": [
@@ -277,6 +292,14 @@
       "topic": "Grief and memory",
       "drive_removal": "unlinked",
       "timestamp": "2026-11-25T09:47:07.588256+00:00"
+    },
+    {
+      "drive_id": "1ox43cRxqcVwIWkzsR3IoKfLE2C90YJD4",
+      "yt_id": "w1RH5NQbg3s",
+      "title": "The truth about your struggle... #Shorts",
+      "topic": "Motivational animation",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-25T22:27:19.802297+00:00"
     }
   ]
 }
