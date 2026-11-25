@@ -164,6 +164,21 @@
       ],
       "drive_removal": "unlinked",
       "uploaded_at": "2026-11-24T22:59:40.397438+00:00"
+    },
+    "157JwUYRvvVv3kMTZydqTO6XOBQM6MoK0": {
+      "name": "Reel 12 - Grief.mp4",
+      "yt_id": "Kl-8hSvK6-k",
+      "yt_url": "https://youtu.be/Kl-8hSvK6-k",
+      "title": "The truth about grief that nobody tells you #Shorts",
+      "topic": "Grief and memory",
+      "tags_count": 12,
+      "hashtags": [
+        "#grief",
+        "#emotional",
+        "#shorts"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-25T09:47:07.588256+00:00"
     }
   },
   "history": [
@@ -254,6 +269,14 @@
       "topic": "motivational animation",
       "drive_removal": "unlinked",
       "timestamp": "2026-11-24T22:59:40.397438+00:00"
+    },
+    {
+      "drive_id": "157JwUYRvvVv3kMTZydqTO6XOBQM6MoK0",
+      "yt_id": "Kl-8hSvK6-k",
+      "title": "The truth about grief that nobody tells you #Shorts",
+      "topic": "Grief and memory",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-25T09:47:07.588256+00:00"
     }
   ]
 }
