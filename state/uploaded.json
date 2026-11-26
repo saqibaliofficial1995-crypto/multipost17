@@ -194,6 +194,21 @@
       ],
       "drive_removal": "unlinked",
       "uploaded_at": "2026-11-25T22:27:19.802297+00:00"
+    },
+    "1jPJtMfzYZdTILvbriMA2Kbvb1H6Py6Ju": {
+      "name": "Reel 14 - A Teacher Who Believed in You.mp4",
+      "yt_id": "TBw7_JgPFY8",
+      "yt_url": "https://youtu.be/TBw7_JgPFY8",
+      "title": "The moment that changes everything... #Shorts",
+      "topic": "Emotional school animation",
+      "tags_count": 12,
+      "hashtags": [
+        "#shorts",
+        "#animation",
+        "#emotional"
+      ],
+      "drive_removal": "unlinked",
+      "uploaded_at": "2026-11-26T09:26:28.726453+00:00"
     }
   },
   "history": [
@@ -300,6 +315,14 @@
       "topic": "Motivational animation",
       "drive_removal": "unlinked",
       "timestamp": "2026-11-25T22:27:19.802297+00:00"
+    },
+    {
+      "drive_id": "1jPJtMfzYZdTILvbriMA2Kbvb1H6Py6Ju",
+      "yt_id": "TBw7_JgPFY8",
+      "title": "The moment that changes everything... #Shorts",
+      "topic": "Emotional school animation",
+      "drive_removal": "unlinked",
+      "timestamp": "2026-11-26T09:26:28.726453+00:00"
     }
   ]
 }
